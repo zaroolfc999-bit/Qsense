@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QueueSense — Know the wait. Plan your time.</title>
-    <!-- Tailwind CSS CDN -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -25,1122 +25,512 @@
                         }
                     },
                     fontFamily: {
-                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif']
+                        sans: ['Inter', 'system-ui', 'sans-serif']
                     }
                 }
             }
         }
     </script>
-    <!-- Google Fonts Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- QR Code Generator Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         body { background-color: #F6F5F0; color: #20251F; font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased selection:bg-brand-pale selection:text-brand-forest">
+<body class="min-h-screen flex flex-col antialiased">
 
     <!-- DEMO BANNER -->
-    <div class="bg-brand-forest text-white text-xs py-2 px-4 text-center font-medium tracking-wide">
-        <span>🚀 Student Prototype Demonstration (Karachi, Pakistan) — Illustrative Data Only</span>
+    <div class="bg-brand-forest text-white text-xs py-2 px-4 text-center font-medium flex items-center justify-between">
+        <span class="mx-auto">🚀 QueueSense Competition Prototype — Karachi, Pakistan (October 2026)</span>
+        <button onclick="toggleGlobalRole()" id="roleBadgeBtn" class="bg-brand-lime text-brand-forest font-bold px-2 py-0.5 rounded text-[10px] uppercase">
+            Mode: Customer View
+        </button>
     </div>
 
-    <!-- SECTION A — NAVIGATION BAR -->
-    <header class="sticky top-0 z-50 bg-[#F6F5F0]/90 backdrop-blur-md border-b border-brand-border transition-all">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <!-- Logo -->
-            <a href="#" class="flex items-center gap-2 group">
-                <div class="w-9 h-9 rounded-xl bg-brand-forest text-brand-lime flex items-center justify-center font-bold text-lg shadow-sm group-hover:scale-105 transition-transform">
-                    Q
-                </div>
+    <!-- MAIN NAVBAR -->
+    <header class="sticky top-0 z-40 bg-[#F6F5F0]/90 backdrop-blur-md border-b border-brand-border">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <a href="#" onclick="showSection('customer-portal')" class="flex items-center gap-2">
+                <div class="w-9 h-9 rounded-xl bg-brand-forest text-brand-lime flex items-center justify-center font-bold text-lg">Q</div>
                 <div class="flex flex-col">
-                    <span class="font-bold text-lg tracking-tight text-brand-text leading-none">QueueSense</span>
-                    <span class="text-[10px] text-brand-muted tracking-widest uppercase font-medium mt-0.5">Karachi</span>
+                    <span class="font-bold text-lg text-brand-text leading-none">QueueSense</span>
+                    <span class="text-[10px] text-brand-muted uppercase tracking-wider font-semibold">Karachi</span>
                 </div>
             </a>
 
-            <!-- Desktop Nav Links -->
-            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-brand-muted">
-                <a href="#restaurants" class="hover:text-brand-forest transition-colors">Find a table</a>
-                <a href="#how-it-works" class="hover:text-brand-forest transition-colors">How it works</a>
-                <a href="#dashboard" class="hover:text-brand-forest transition-colors">For restaurants</a>
+            <!-- NAV LINKS -->
+            <nav class="hidden md:flex items-center gap-6 text-xs font-semibold text-brand-muted">
+                <button onclick="showSection('customer-portal')" class="hover:text-brand-forest transition-colors">Find Restaurants</button>
+                <button onclick="showSection('premium-info')" class="text-amber-600 font-bold hover:underline">QueueSense+ (PKR 499)</button>
+                <button onclick="showSection('auth-portal')" class="hover:text-brand-forest transition-colors">Account Login / Register</button>
             </nav>
 
-            <!-- Actions -->
-            <div class="flex items-center gap-3">
-                <button onclick="openQrModal()" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-lg bg-brand-pale text-brand-forest hover:bg-[#cbe1cc] transition-colors">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
-                    QR Demo
+            <div class="flex items-center gap-2">
+                <button onclick="showSection('my-ticket-view')" class="text-xs font-semibold px-3 py-2 rounded-xl bg-brand-pale text-brand-forest">
+                    🎫 My Ticket
                 </button>
-                <a href="#restaurants" class="inline-flex items-center justify-center text-xs sm:text-sm font-medium px-4 py-2 rounded-xl bg-brand-forest text-white hover:bg-[#1a4331] shadow-sm transition-all hover:shadow">
-                    Join a queue
-                </a>
+                <button onclick="showSection('staff-portal')" class="text-xs font-semibold px-3.5 py-2 rounded-xl bg-brand-forest text-white">
+                    Staff Dashboard 🔐
+                </button>
             </div>
         </div>
     </header>
 
+    <!-- MAIN CONTENT CONTAINER -->
     <main class="flex-grow">
-        <!-- SECTION B — HERO SECTION -->
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            <!-- Left Column -->
-            <div class="lg:col-span-7 space-y-6">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-pale text-brand-forest text-xs font-medium border border-[#cbe1cc]">
-                    <span class="w-2 h-2 rounded-full bg-brand-forest animate-pulse"></span>
-                    Smarter waiting, Karachi
-                </div>
-                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-brand-text leading-[1.1]">
-                    Know the wait. <br><span class="text-brand-forest">Plan your time.</span>
-                </h1>
-                <p class="text-lg text-brand-muted max-w-xl leading-relaxed">
-                    Join a restaurant queue before you reach the host stand. Get a clearer wait estimate, track your place, and spend less time guessing outside busy cafés.
-                </p>
-                <div class="flex flex-wrap items-center gap-4 pt-2">
-                    <a href="#restaurants" class="px-6 py-3.5 rounded-xl bg-brand-forest text-white font-medium text-sm hover:bg-[#1a4331] shadow-md transition-all flex items-center gap-2">
-                        Find restaurants
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                    </a>
-                    <a href="#dashboard" class="px-6 py-3.5 rounded-xl bg-brand-card text-brand-text font-medium text-sm border border-brand-border hover:bg-brand-border/50 transition-all">
-                        Restaurant dashboard
-                    </a>
-                </div>
-                <div class="pt-4 flex items-center gap-6 text-xs text-brand-muted border-t border-brand-border">
-                    <div>⚡ Instant QR Check-in</div>
-                    <div>📊 TableFit Estimates</div>
-                    <div>🇵🇰 Tailored for Karachi Cafés</div>
-                </div>
-            </div>
 
-            <!-- Right Column: Visual Mockup Ticket -->
-            <div class="lg:col-span-5 flex justify-center">
-                <div class="w-full max-w-md bg-brand-card rounded-3xl p-6 border border-brand-border shadow-xl relative overflow-hidden">
-                    <div class="absolute -right-12 -top-12 w-32 h-32 bg-brand-pale rounded-full blur-2xl opacity-60 pointer-events-none"></div>
-                    
-                    <div class="flex justify-between items-start mb-6">
-                        <div>
-                            <span class="text-[10px] uppercase font-semibold px-2 py-0.5 rounded bg-brand-pale text-brand-forest">Demo Ticket</span>
-                            <h3 class="font-bold text-xl text-brand-text mt-1">Xander’s</h3>
-                            <p class="text-xs text-brand-muted">Clifton, Karachi • Table for 3</p>
-                        </div>
-                        <div class="text-right">
-                            <span class="text-xs text-brand-muted">Ticket ID</span>
-                            <p class="font-mono font-bold text-sm text-brand-forest">#QS-408</p>
-                        </div>
-                    </div>
-
-                    <div class="bg-brand-bg rounded-2xl p-4 mb-6 border border-brand-border space-y-3">
-                        <div class="flex justify-between items-center text-sm">
-                            <span class="text-brand-muted">Estimated Wait</span>
-                            <span class="font-bold text-brand-forest text-base">15–22 mins</span>
-                        </div>
-                        <div class="flex justify-between items-center text-sm">
-                            <span class="text-brand-muted">Queue Position</span>
-                            <span class="font-bold text-brand-text">2 groups ahead</span>
-                        </div>
-                        <div class="w-full bg-brand-border h-2 rounded-full overflow-hidden">
-                            <div class="bg-brand-forest h-full w-3/5 rounded-full"></div>
-                        </div>
-                        <div class="flex justify-between items-center text-[11px] text-brand-muted">
-                            <span>Joined 5m ago</span>
-                            <span class="text-brand-forest font-medium">● High Confidence</span>
-                        </div>
-                    </div>
-
-                    <div class="space-y-2">
-                        <div class="p-3 rounded-xl bg-brand-amber/40 border border-brand-amber text-xs text-brand-text flex items-center gap-2">
-                            <span class="text-base">💡</span>
-                            <span><strong>TableFit Update:</strong> 4-seater table just cleared up. You're next!</span>
-                        </div>
+        <!-- ========================================== -->
+        <!-- SECTION 1: CUSTOMER PORTAL (DEFAULT VIEW) -->
+        <!-- ========================================== -->
+        <div id="customer-portal" class="view-section">
+            <!-- HERO -->
+            <section class="max-w-7xl mx-auto px-4 py-12 md:py-16 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                <div class="md:col-span-7 space-y-4">
+                    <span class="px-3 py-1 rounded-full bg-brand-pale text-brand-forest text-xs font-medium border border-[#cbe1cc]">
+                        Smarter waiting for Karachi Cafés
+                    </span>
+                    <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-brand-text leading-tight">
+                        Know the wait. <br><span class="text-brand-forest">Plan your time.</span>
+                    </h1>
+                    <p class="text-sm md:text-base text-brand-muted max-w-lg">
+                        Join waitlists at top Clifton & DHA dining spots before reaching the host stand. Track table availability in real time.
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-3">
+                        <a href="#directory" class="px-5 py-3 rounded-xl bg-brand-forest text-white text-xs font-semibold">Browse Restaurants</a>
+                        <button onclick="showSection('premium-info')" class="px-5 py-3 rounded-xl bg-amber-100 text-amber-900 border border-amber-300 text-xs font-semibold">
+                            Upgrade to Premium (PKR 499) ★
+                        </button>
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <!-- SECTION C — RESTAURANT DISCOVERY -->
-        <section id="restaurants" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-brand-border">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
-                <div>
-                    <span class="text-xs uppercase font-semibold text-brand-forest tracking-wider">Directory</span>
-                    <h2 class="text-3xl font-bold text-brand-text mt-1">Where are we eating?</h2>
-                    <p class="text-sm text-brand-muted mt-1">Select a restaurant below to test the QueueSense live demo waitlist flow.</p>
-                </div>
-                <!-- Search Input -->
-                <div class="w-full md:w-72">
-                    <input type="text" id="searchInput" oninput="filterRestaurants()" placeholder="Search restaurant or cuisine..." class="w-full px-4 py-2.5 rounded-xl bg-brand-card border border-brand-border text-sm focus:outline-none focus:ring-2 focus:ring-brand-forest">
-                </div>
-            </div>
-
-            <!-- Filters Bar -->
-            <div class="bg-brand-card p-4 rounded-2xl border border-brand-border mb-8 flex flex-wrap gap-4 items-center justify-between">
-                <div class="flex flex-wrap items-center gap-2">
-                    <span class="text-xs font-semibold text-brand-muted uppercase mr-2">Area:</span>
-                    <button onclick="setAreaFilter('all')" class="area-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-brand-forest text-white transition-all" data-area="all">All Areas</button>
-                    <button onclick="setAreaFilter('Clifton')" class="area-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-brand-bg text-brand-muted hover:bg-brand-pale hover:text-brand-forest transition-all" data-area="Clifton">Clifton</button>
-                    <button onclick="setAreaFilter('DHA')" class="area-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-brand-bg text-brand-muted hover:bg-brand-pale hover:text-brand-forest transition-all" data-area="DHA">DHA</button>
-                    <button onclick="setAreaFilter('PECHS')" class="area-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-brand-bg text-brand-muted hover:bg-brand-pale hover:text-brand-forest transition-all" data-area="PECHS">PECHS</button>
-                    <button onclick="setAreaFilter('Gulshan')" class="area-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-brand-bg text-brand-muted hover:bg-brand-pale hover:text-brand-forest transition-all" data-area="Gulshan">Gulshan</button>
-                </div>
-                <div class="flex items-center gap-2">
-                    <span class="text-xs font-semibold text-brand-muted uppercase mr-2">Wait Time:</span>
-                    <select id="waitTimeFilter" onchange="filterRestaurants()" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-brand-bg text-brand-text border border-brand-border focus:outline-none">
-                        <option value="all">Any Wait</option>
-                        <option value="15">Under 15 mins</option>
-                        <option value="30">15–30 mins</option>
-                        <option value="31">More than 30 mins</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Restaurant Cards Grid -->
-            <div id="restaurantGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Dynamically populated by JS -->
-            </div>
-
-            <!-- Demo Disclosure Notice -->
-            <div class="mt-8 p-4 rounded-2xl bg-brand-amber/20 border border-brand-amber/60 text-xs text-brand-text flex items-center gap-3">
-                <span class="text-lg">ℹ️</span>
-                <span><strong>Demo Note:</strong> Restaurant names and queue information are illustrative. QueueSense is not affiliated with these restaurants, and live availability has not been connected.</span>
-            </div>
-        </section>
-
-        <!-- SECTION D — HOW QUEUESENSE WORKS -->
-        <section id="how-it-works" class="bg-brand-forest text-white py-20 my-8">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="max-w-2xl mb-16">
-                    <span class="text-xs uppercase font-semibold text-brand-lime tracking-wider">How it works</span>
-                    <h2 class="text-3xl sm:text-4xl font-bold mt-2">Not just a number. A better estimate.</h2>
-                    <p class="text-brand-pale/80 text-sm mt-3">QueueSense replaces messy paper waitlists and guessing games with our transparent TableFit estimation engine.</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/10">
-                        <div class="w-10 h-10 rounded-xl bg-brand-lime text-brand-forest flex items-center justify-center font-bold mb-4">1</div>
-                        <h3 class="font-bold text-lg mb-2">QR Check-In</h3>
-                        <p class="text-xs text-brand-pale/80 leading-relaxed">Guests scan a restaurant QR code or join online. Staff can also instantly add walk-in parties manually.</p>
+                <div class="md:col-span-5 bg-brand-card p-6 rounded-3xl border border-brand-border shadow-md">
+                    <div class="flex justify-between items-center mb-4 border-b border-brand-border pb-3">
+                        <span class="text-xs font-bold uppercase text-brand-forest">Live Demo Ticket</span>
+                        <span class="font-mono text-xs font-bold text-brand-muted">#QS-408</span>
                     </div>
-                    <div class="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/10">
-                        <div class="w-10 h-10 rounded-xl bg-brand-lime text-brand-forest flex items-center justify-center font-bold mb-4">2</div>
-                        <h3 class="font-bold text-lg mb-2">Transparent Ranges</h3>
-                        <p class="text-xs text-brand-pale/80 leading-relaxed">We show realistic ranges (e.g. 15–25 mins) rather than falsely precise promises that frustrate diners.</p>
-                    </div>
-                    <div class="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/10">
-                        <div class="w-10 h-10 rounded-xl bg-brand-lime text-brand-forest flex items-center justify-center font-bold mb-4">3</div>
-                        <h3 class="font-bold text-lg mb-2">Live Queue Status</h3>
-                        <p class="text-xs text-brand-pale/80 leading-relaxed">Customers track their exact position on their phone and get notified instantly when their table is ready.</p>
-                    </div>
-                    <div class="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/10">
-                        <div class="w-10 h-10 rounded-xl bg-brand-lime text-brand-forest flex items-center justify-center font-bold mb-4">4</div>
-                        <h3 class="font-bold text-lg mb-2">Table-Aware Logic</h3>
-                        <p class="text-xs text-brand-pale/80 leading-relaxed">Estimates adapt dynamically based on party size, available table inventory, and recent turn times.</p>
+                    <div class="space-y-3 text-xs">
+                        <div class="flex justify-between"><span class="text-brand-muted">Restaurant:</span><span class="font-bold text-brand-text">Xander's (Clifton)</span></div>
+                        <div class="flex justify-between"><span class="text-brand-muted">Party Size:</span><span class="font-bold">3 People</span></div>
+                        <div class="flex justify-between"><span class="text-brand-muted">Est. Wait:</span><span class="font-bold text-brand-forest">15–22 mins</span></div>
+                        <div class="flex justify-between"><span class="text-brand-muted">Status:</span><span class="px-2 py-0.5 rounded bg-brand-amber font-semibold text-brand-text">Waiting</span></div>
                     </div>
                 </div>
+            </section>
+
+            <!-- RESTAURANT DIRECTORY -->
+            <section id="directory" class="max-w-7xl mx-auto px-4 py-12 border-t border-brand-border">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-brand-text">Karachi Restaurant Directory</h2>
+                        <p class="text-xs text-brand-muted mt-1">Select a venue to check live queue status or join the waitlist.</p>
+                    </div>
+                    <input type="text" id="directorySearch" oninput="filterDirectory()" placeholder="Search restaurant or area..." class="w-full md:w-64 px-4 py-2 bg-brand-card border border-brand-border rounded-xl text-xs focus:outline-none">
+                </div>
+
+                <div id="restaurantGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Dynamic rendering -->
+                </div>
+            </section>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- SECTION 2: QUEUESENSE+ PREMIUM SUITE VIEW -->
+        <!-- ========================================== -->
+        <div id="premium-info" class="view-section hidden max-w-4xl mx-auto px-4 py-12">
+            <div class="bg-gradient-to-br from-amber-50 to-amber-100/50 rounded-3xl p-8 border border-amber-200 shadow-sm space-y-6">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <span class="px-3 py-1 bg-amber-200 text-amber-900 rounded-full text-[10px] font-bold uppercase tracking-wider">QueueSense+ Premium Tier</span>
+                        <h2 class="text-3xl font-bold text-brand-text mt-2">Dine on Your Schedule</h2>
+                        <p class="text-xs text-brand-muted mt-1">Designed for busy food lovers in Karachi who want guaranteed comfort.</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-2xl font-bold text-brand-forest">PKR 499</span>
+                        <span class="text-xs text-brand-muted block">/ month</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
+                    <div class="p-4 bg-white rounded-2xl border border-amber-200 space-y-1">
+                        <h4 class="font-bold text-sm text-brand-text">📞 Direct One-Tap Calling</h4>
+                        <p class="text-xs text-brand-muted">Call restaurant host stands directly from your browser to confirm party changes or dietary requests.</p>
+                    </div>
+                    <div class="p-4 bg-white rounded-2xl border border-amber-200 space-y-1">
+                        <h4 class="font-bold text-sm text-brand-text">📅 Advance Table Bookings</h4>
+                        <p class="text-xs text-brand-muted">Reserve tables up to 7 days ahead, bypassing walk-in waitlists completely.</p>
+                    </div>
+                    <div class="p-4 bg-white rounded-2xl border border-amber-200 space-y-1">
+                        <h4 class="font-bold text-sm text-brand-text">⚡ TableFit Priority Pass</h4>
+                        <p class="text-xs text-brand-muted">Move ahead 1 queue position automatically when compatible tables become available.</p>
+                    </div>
+                    <div class="p-4 bg-white rounded-2xl border border-amber-200 space-y-1">
+                        <h4 class="font-bold text-sm text-brand-text">🏷️ Off-Peak Food Discounts</h4>
+                        <p class="text-xs text-brand-muted">Get 15–20% off your bill during weekday off-peak hours at participating Karachi venues.</p>
+                    </div>
+                </div>
+
+                <div class="pt-4 text-center">
+                    <button onclick="subscribePremium()" class="w-full md:w-auto px-8 py-3.5 bg-brand-forest text-white text-xs font-bold rounded-xl hover:bg-[#1a4331] shadow">
+                        Upgrade Now for PKR 499/mo
+                    </button>
+                    <p class="text-[11px] text-brand-muted mt-2">Cancel anytime. Free 7-day trial included.</p>
+                </div>
             </div>
-        </section>
+        </div>
 
-        <!-- SECTIONS E, F, I, J — RESTAURANT DASHBOARD & MANAGEMENT -->
-        <section id="dashboard" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
-                <div>
-                    <span class="text-xs uppercase font-semibold text-brand-forest tracking-wider">Host Control Center</span>
-                    <h2 class="text-3xl font-bold text-brand-text mt-1">Restaurant Dashboard</h2>
-                    <p class="text-sm text-brand-muted mt-1">Manage active queues, table inventory, and turnaround times in real time.</p>
+        <!-- ========================================== -->
+        <!-- SECTION 3: AUTH / ACCOUNT CREATION PAGE   -->
+        <!-- ========================================== -->
+        <div id="auth-portal" class="view-section hidden max-w-lg mx-auto px-4 py-12">
+            <div class="bg-brand-card p-6 md:p-8 rounded-3xl border border-brand-border shadow-sm space-y-6">
+                <!-- TABS -->
+                <div class="flex border-b border-brand-border pb-2 gap-4">
+                    <button onclick="switchAuthTab('diner')" id="tabDinerBtn" class="font-bold text-sm text-brand-forest border-b-2 border-brand-forest pb-1">Diner Account</button>
+                    <button onclick="switchAuthTab('staff')" id="tabStaffBtn" class="font-bold text-sm text-brand-muted pb-1">Restaurant Verification 🔒</button>
                 </div>
-                <!-- Restaurant Selector for Dashboard -->
-                <div class="flex items-center gap-3 bg-brand-card p-2 rounded-xl border border-brand-border">
-                    <span class="text-xs font-semibold text-brand-muted pl-2">Active Venue:</span>
-                    <select id="dashboardRestaurantSelect" onchange="switchDashboardRestaurant(this.value)" class="px-3 py-1.5 rounded-lg text-sm font-semibold bg-brand-bg text-brand-forest border border-brand-border focus:outline-none">
-                        <!-- Populated by JS -->
-                    </select>
-                </div>
+
+                <!-- DINER FORM -->
+                <form id="dinerAuthForm" onsubmit="handleDinerSignup(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-brand-muted mb-1">Full Name</label>
+                        <input type="text" required id="dinerName" placeholder="e.g. Saad Khan" class="w-full p-2.5 rounded-xl bg-brand-bg border border-brand-border text-xs focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-brand-muted mb-1">Mobile Number (Karachi)</label>
+                        <input type="tel" required id="dinerPhone" placeholder="0300-1234567" class="w-full p-2.5 rounded-xl bg-brand-bg border border-brand-border text-xs focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-brand-muted mb-1">Select Tier</label>
+                        <select id="dinerTier" class="w-full p-2.5 rounded-xl bg-brand-bg border border-brand-border text-xs focus:outline-none">
+                            <option value="free">Standard Diner (Free)</option>
+                            <option value="premium">QueueSense+ Member (PKR 499/mo)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="w-full py-3 bg-brand-forest text-white text-xs font-bold rounded-xl">Create Customer Profile</button>
+                </form>
+
+                <!-- STAFF VERIFICATION FORM -->
+                <form id="staffAuthForm" onsubmit="handleStaffVerification(event)" class="space-y-4 hidden">
+                    <div class="p-3 bg-amber-50 rounded-xl border border-amber-200 text-[11px] text-amber-900">
+                        🔒 <strong>Staff Verification Required:</strong> Restaurant accounts are strictly verified using business documentation before dashboard access is granted.
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-brand-muted mb-1">Restaurant Name</label>
+                        <input type="text" required id="staffRestName" placeholder="e.g. Xander's Clifton" class="w-full p-2.5 rounded-xl bg-brand-bg border border-brand-border text-xs focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-brand-muted mb-1">Manager NTN / License Number</label>
+                        <input type="text" required id="staffNtn" placeholder="NTN-9876543-2" class="w-full p-2.5 rounded-xl bg-brand-bg border border-brand-border text-xs focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-brand-muted mb-1">Business Document Upload (Proof)</label>
+                        <input type="file" id="staffDoc" class="w-full p-2 rounded-xl bg-brand-bg border border-brand-border text-xs">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" id="demoBypass" class="rounded">
+                        <label for="demoBypass" class="text-xs text-brand-muted">Auto-Verify for Competition Judging</label>
+                    </div>
+                    <button type="submit" class="w-full py-3 bg-brand-forest text-white text-xs font-bold rounded-xl">Submit Verification Request</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- SECTION 4: ISOLATED STAFF DASHBOARD        -->
+        <!-- ========================================== -->
+        <div id="staff-portal" class="view-section hidden max-w-7xl mx-auto px-4 py-8 space-y-6">
+            <div id="staffAuthGate" class="p-6 bg-brand-card rounded-2xl border border-brand-border text-center space-y-3">
+                <span class="text-2xl">🔒</span>
+                <h3 class="text-lg font-bold">Manager Authentication Required</h3>
+                <p class="text-xs text-brand-muted max-w-md mx-auto">Please submit verification credentials on the Account page or click below to simulate verified access for demonstration.</p>
+                <button onclick="bypassStaffVerification()" class="px-4 py-2 bg-brand-forest text-white text-xs font-bold rounded-xl">Demo Bypass & Enter Dashboard</button>
             </div>
 
-            <!-- Dashboard Summary Metrics -->
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                <div class="bg-brand-card p-5 rounded-2xl border border-brand-border">
-                    <span class="text-xs text-brand-muted font-medium">Guests Waiting</span>
-                    <div class="text-3xl font-bold text-brand-text mt-1" id="metricWaitingCount">0</div>
-                    <span class="text-[11px] text-brand-forest mt-1 inline-block font-medium">Active queue</span>
+            <div id="staffDashboardBody" class="hidden space-y-6">
+                <!-- DASHBOARD HEADER -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center bg-brand-card p-6 rounded-2xl border border-brand-border gap-4">
+                    <div>
+                        <span class="px-2.5 py-0.5 rounded bg-brand-pale text-brand-forest text-[10px] font-bold uppercase">Verified Portal</span>
+                        <h2 class="text-2xl font-bold text-brand-text mt-1" id="dashVenueTitle">Xander's Host Control</h2>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="openWalkInModal()" class="px-3 py-2 bg-brand-forest text-white text-xs font-semibold rounded-xl">+ Add Walk-In</button>
+                        <button onclick="toggleDelayAlert()" id="delayBtn" class="px-3 py-2 bg-brand-bg border border-brand-border text-xs font-semibold rounded-xl">Simulate Delay ⚠️</button>
+                        <button onclick="exportCsv()" class="px-3 py-2 bg-brand-bg border border-brand-border text-xs font-semibold rounded-xl">Export CSV 📥</button>
+                    </div>
                 </div>
-                <div class="bg-brand-card p-5 rounded-2xl border border-brand-border">
-                    <span class="text-xs text-brand-muted font-medium">Avg Estimated Wait</span>
-                    <div class="text-3xl font-bold text-brand-forest mt-1" id="metricAvgWait">0m</div>
-                    <span class="text-[11px] text-brand-muted mt-1 inline-block">Based on TableFit</span>
-                </div>
-                <div class="bg-brand-card p-5 rounded-2xl border border-brand-border">
-                    <span class="text-xs text-brand-muted font-medium">Available Tables</span>
-                    <div class="text-3xl font-bold text-brand-text mt-1" id="metricTablesAvailable">0</div>
-                    <span class="text-[11px] text-brand-muted mt-1 inline-block">Free inventory</span>
-                </div>
-                <div class="bg-brand-card p-5 rounded-2xl border border-brand-border">
-                    <span class="text-xs text-brand-muted font-medium">Feedback Rating</span>
-                    <div class="text-3xl font-bold text-brand-text mt-1" id="metricFeedbackScore">4.8 ★</div>
-                    <span class="text-[11px] text-brand-muted mt-1 inline-block" id="metricFeedbackCount">0 submissions</span>
-                </div>
-            </div>
 
-            <!-- Dashboard Main Grid: Queue List & Controls -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <!-- Left: Queue List & Staff Actions -->
-                <div class="lg:col-span-8 space-y-6">
-                    <div class="bg-brand-card rounded-2xl border border-brand-border p-6 shadow-sm">
-                        <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
-                            <div>
-                                <h3 class="font-bold text-lg text-brand-text" id="dashRestaurantTitle">Restaurant Queue</h3>
-                                <p class="text-xs text-brand-muted">Real-time walk-in and QR check-in list</p>
-                            </div>
-                            <div class="flex flex-wrap items-center gap-2">
-                                <button onclick="openWalkInModal()" class="px-3 py-2 rounded-xl bg-brand-forest text-white text-xs font-medium hover:bg-[#1a4331] transition-all flex items-center gap-1.5">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                                    Add Walk-In
-                                </button>
-                                <button onclick="toggleDelayAlert()" id="delayAlertBtn" class="px-3 py-2 rounded-xl bg-brand-bg border border-brand-border text-brand-text text-xs font-medium hover:bg-brand-border transition-all">
-                                    Simulate Delay ⚠️
-                                </button>
-                                <button onclick="exportQueueCsv()" class="px-3 py-2 rounded-xl bg-brand-bg border border-brand-border text-brand-text text-xs font-medium hover:bg-brand-border transition-all">
-                                    Export CSV 📥
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Delay Alert Banner inside dashboard -->
-                        <div id="activeDelayBanner" class="hidden mb-4 p-3 rounded-xl bg-brand-amber border border-brand-amber text-xs text-brand-text flex items-center justify-between">
-                            <div class="flex items-center gap-2">
-                                <span class="text-base">⚠️</span>
-                                <span><strong>High Rush / Delay Active:</strong> Wait estimates increased by +15 mins across all party sizes.</span>
-                            </div>
-                            <button onclick="toggleDelayAlert()" class="font-bold underline text-[11px]">Clear Alert</button>
-                        </div>
-
-                        <!-- Queue Table -->
+                <!-- TABLEFIT & QUEUE MANAGEMENT -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- QUEUE LIST -->
+                    <div class="lg:col-span-8 bg-brand-card p-6 rounded-2xl border border-brand-border space-y-4">
+                        <h3 class="font-bold text-base">Active Waitlist</h3>
                         <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse">
-                               <thead>
-                                    <tr class="border-b border-brand-border text-[11px] uppercase tracking-wider text-brand-muted font-semibold">
-                                        <th class="pb-3 px-2">Ticket & Name</th>
-                                        <th class="pb-3 px-2">Party</th>
-                                        <th class="pb-3 px-2">Est. Wait</th>
-                                        <th class="pb-3 px-2">Status</th>
-                                        <th class="pb-3 px-2 text-right">Host Actions</th>
+                            <table class="w-full text-left text-xs">
+                                <thead>
+                                    <tr class="border-b border-brand-border text-brand-muted uppercase text-[10px]">
+                                        <th class="pb-2">Ticket</th>
+                                        <th class="pb-2">Guest</th>
+                                        <th class="pb-2">Party</th>
+                                        <th class="pb-2">Status</th>
+                                        <th class="pb-2 text-right">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody id="dashboardQueueTableBody" class="text-sm divide-y divide-brand-border">
-                                    <!-- Populated by JS -->
+                                <tbody id="staffQueueBody" class="divide-y divide-brand-border">
+                                    <!-- Dynamic Queue Rows -->
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                </div>
 
-                <!-- Right: Table Inventory & TableFit Controls -->
-                <div class="lg:col-span-4 space-y-6">
-                    <div class="bg-brand-card rounded-2xl border border-brand-border p-6 shadow-sm space-y-5">
-                        <div>
-                            <h3 class="font-bold text-base text-brand-text">Table Inventory & TableFit</h3>
-                            <p class="text-xs text-brand-muted">Adjust seating capacity & turn times</p>
-                        </div>
-
-                        <div class="space-y-4">
+                    <!-- INVENTORY CONTROLS -->
+                    <div class="lg:col-span-4 bg-brand-card p-6 rounded-2xl border border-brand-border space-y-4">
+                        <h3 class="font-bold text-base">TableFit Inventory</h3>
+                        <div class="space-y-3 text-xs">
                             <div>
-                                <div class="flex justify-between text-xs font-medium mb-1">
-                                    <span class="text-brand-muted">2-Seater Tables</span>
-                                    <span class="font-bold text-brand-text" id="valTwoSeater">6</span>
-                                </div>
-                                <input type="range" min="1" max="15" value="6" oninput="updateTableInventory('two', this.value)" class="w-full accent-[#245B43]">
+                                <div class="flex justify-between mb-1"><span class="text-brand-muted">Available 2-Seaters:</span><span id="valTwo" class="font-bold">6</span></div>
+                                <input type="range" min="1" max="15" value="6" oninput="updateTableFit('two', this.value)" class="w-full accent-brand-forest">
                             </div>
-
                             <div>
-                                <div class="flex justify-between text-xs font-medium mb-1">
-                                    <span class="text-brand-muted">4-Seater Tables</span>
-                                    <span class="font-bold text-brand-text" id="valFourSeater">8</span>
-                                </div>
-                                <input type="range" min="1" max="20" value="8" oninput="updateTableInventory('four', this.value)" class="w-full accent-[#245B43]">
+                                <div class="flex justify-between mb-1"><span class="text-brand-muted">Available 4-Seaters:</span><span id="valFour" class="font-bold">8</span></div>
+                                <input type="range" min="1" max="15" value="8" oninput="updateTableFit('four', this.value)" class="w-full accent-brand-forest">
                             </div>
-
                             <div>
-                                <div class="flex justify-between text-xs font-medium mb-1">
-                                    <span class="text-brand-muted">Avg. Table Turn Time</span>
-                                    <span class="font-bold text-brand-forest" id="valTurnTime">45 mins</span>
-                                </div>
-                                <input type="range" min="15" max="90" step="5" value="45" oninput="updateTableInventory('turnTime', this.value)" class="w-full accent-[#245B43]">
+                                <div class="flex justify-between mb-1"><span class="text-brand-muted">Avg. Table Turn Time:</span><span id="valTurn" class="font-bold">45m</span></div>
+                                <input type="range" min="15" max="90" step="5" value="45" oninput="updateTableFit('turn', this.value)" class="w-full accent-brand-forest">
                             </div>
                         </div>
-
-                        <div class="p-3 rounded-xl bg-brand-bg border border-brand-border text-xs text-brand-muted space-y-1">
-                            <p class="font-semibold text-brand-text">Algorithm Status:</p>
-                            <p>Deterministic TableFit v1.0 active. Adjusting inventory instantly recalculates wait ranges and confidence ratings.</p>
-                        </div>
-                    </div>
-
-                    <!-- Customer Feedback Section inside Dashboard -->
-                    <div class="bg-brand-card rounded-2xl border border-brand-border p-6 shadow-sm space-y-4">
-                        <div>
-                            <h3 class="font-bold text-base text-brand-text">Customer Feedback</h3>
-                            <p class="text-xs text-brand-muted">Recent ratings from completed visits</p>
-                        </div>
-                        <div id="feedbackList" class="space-y-3 max-h-48 overflow-y-auto pr-1">
-                            <!-- Populated by JS -->
-                        </div>
-                        <button onclick="openFeedbackModal()" class="w-full py-2 rounded-xl bg-brand-pale text-brand-forest text-xs font-semibold hover:bg-[#cbe1cc] transition-colors">
-                            Submit Test Feedback ★
-                        </button>
-                    </div>
-
-                    <!-- Reset Demo Data -->
-                    <div class="text-center">
-                        <button onclick="resetDemoData()" class="text-xs text-brand-muted hover:text-brand-red underline font-medium transition-colors">
-                            Reset Demo Data to Default
-                        </button>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- FOOTER -->
-        <footer class="bg-brand-card border-t border-brand-border py-12 mt-12">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-lg bg-brand-forest text-brand-lime flex items-center justify-center font-bold text-sm">
-                        Q
-                    </div>
-                    <div>
-                        <span class="font-bold text-brand-text">QueueSense</span>
-                        <p class="text-xs text-brand-muted">“Know the wait. Plan your time.” • Karachi, Pakistan</p>
-                    </div>
-                </div>
-                <div class="text-xs text-brand-muted max-w-md">
-                    Student entrepreneurship competition prototype. Restaurant names and queue metrics are illustrative and simulated for demonstration purposes.
-                </div>
-                <div class="text-xs font-semibold text-brand-forest">
-                    October 2026 Release
-                </div>
+        <!-- ========================================== -->
+        <!-- SECTION 5: CUSTOMER TICKET TAB            -->
+        <!-- ========================================== -->
+        <div id="my-ticket-view" class="view-section hidden max-w-md mx-auto px-4 py-12">
+            <div id="ticketContainer" class="bg-brand-card p-6 rounded-3xl border border-brand-border shadow-md space-y-4">
+                <!-- Rendered dynamically -->
             </div>
-        </footer>
+        </div>
+
     </main>
 
-    <!-- MODAL 1: CHECK-IN / JOIN QUEUE MODAL -->
-    <div id="checkInModal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-brand-card w-full max-w-lg rounded-3xl p-6 sm:p-8 border border-brand-border shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
-            <button onclick="closeCheckInModal()" class="absolute right-5 top-5 text-brand-muted hover:text-brand-text text-xl font-bold">×</button>
-            
-            <div class="mb-6">
-                <span class="text-[10px] uppercase font-semibold px-2 py-0.5 rounded bg-brand-pale text-brand-forest">Live Waitlist Check-In</span>
-                <h3 class="font-bold text-2xl text-brand-text mt-1" id="modalRestaurantName">Restaurant Name</h3>
-                <p class="text-xs text-brand-muted" id="modalRestaurantMeta">Clifton, Karachi • Est. wait: 15–25 mins</p>
-            </div>
-
-            <form id="checkInForm" onsubmit="submitCheckIn(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-brand-muted uppercase mb-1">Your Name</label>
-                    <input type="text" id="guestNameInput" required placeholder="e.g. Hamza Khan" class="w-full px-4 py-2.5 rounded-xl bg-brand-bg border border-brand-border text-sm focus:outline-none focus:ring-2 focus:ring-brand-forest">
-                </div>
-
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-brand-muted uppercase mb-1">Party Size</label>
-                        <select id="partySizeInput" class="w-full px-4 py-2.5 rounded-xl bg-brand-bg border border-brand-border text-sm focus:outline-none focus:ring-2 focus:ring-brand-forest">
-                            <option value="1">1 Person</option>
-                            <option value="2">2 People</option>
-                            <option value="3" selected>3 People</option>
-                            <option value="4">4 People</option>
-                            <option value="5">5 People</option>
-                            <option value="6">6+ People (Large Group)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-brand-muted uppercase mb-1">Seating Preference</label>
-                        <select id="seatingPrefInput" class="w-full px-4 py-2.5 rounded-xl bg-brand-bg border border-brand-border text-sm focus:outline-none focus:ring-2 focus:ring-brand-forest">
-                            <option value="Any">No Preference</option>
-                            <option value="Indoor AC">Indoor AC</option>
-                            <option value="Outdoor Patio">Outdoor Patio</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="p-4 rounded-xl bg-brand-bg border border-brand-border space-y-2 text-xs">
-                    <div class="flex justify-between">
-                        <span class="text-brand-muted">Calculated Wait Range:</span>
-                        <span class="font-bold text-brand-forest" id="modalCalculatedWait">15–25 mins</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-brand-muted">Confidence Level:</span>
-                        <span class="font-bold text-brand-text" id="modalConfidence">High Confidence</span>
-                    </div>
-                </div>
-
-                <button type="submit" class="w-full py-3.5 rounded-xl bg-brand-forest text-white font-medium text-sm hover:bg-[#1a4331] shadow-md transition-all">
-                    Confirm & Join Queue
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- MODAL 2: CUSTOMER TICKET VIEW MODAL -->
-    <div id="ticketModal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-brand-card w-full max-w-md rounded-3xl p-6 sm:p-8 border border-brand-border shadow-2xl relative">
-            <button onclick="closeTicketModal()" class="absolute right-5 top-5 text-brand-muted hover:text-brand-text text-xl font-bold">×</button>
-
-            <div class="text-center mb-6">
-                <div class="w-12 h-12 bg-brand-pale text-brand-forest rounded-2xl mx-auto flex items-center justify-center font-bold text-xl mb-2">
-                    🎫
-                </div>
-                <h3 class="font-bold text-2xl text-brand-text" id="ticketRestName">Restaurant Name</h3>
-                <p class="text-xs text-brand-muted mt-0.5">Your Queue Ticket</p>
-            </div>
-
-            <div class="bg-brand-bg rounded-2xl p-5 border border-brand-border space-y-4 mb-6">
-                <div class="flex justify-between items-center text-sm border-b border-brand-border pb-3">
-                    <span class="text-brand-muted">Ticket ID</span>
-                    <span class="font-mono font-bold text-brand-forest text-base" id="ticketIdDisplay">#QS-101</span>
-                </div>
-                <div class="flex justify-between items-center text-sm">
-                    <span class="text-brand-muted">Guest Name</span>
-                    <span class="font-bold text-brand-text" id="ticketGuestName">Guest</span>
-                </div>
-                <div class="flex justify-between items-center text-sm">
-                    <span class="text-brand-muted">Party Size</span>
-                    <span class="font-bold text-brand-text" id="ticketPartySize">3 People</span>
-                </div>
-                <div class="flex justify-between items-center text-sm">
-                    <span class="text-brand-muted">Estimated Wait</span>
-                    <span class="font-bold text-brand-forest text-base" id="ticketWaitDisplay">15–25 mins</span>
-                </div>
-                <div class="flex justify-between items-center text-sm">
-                    <span class="text-brand-muted">Current Status</span>
-                    <span class="px-2.5 py-1 rounded-full bg-brand-amber text-brand-text font-semibold text-xs" id="ticketStatusDisplay">Waiting</span>
-                </div>
-            </div>
-
-            <div class="space-y-3">
-                <button onclick="refreshCustomerTicket()" class="w-full py-3 rounded-xl bg-brand-pale text-brand-forest font-medium text-xs hover:bg-[#cbe1cc] transition-colors">
-                    Refresh Status 🔄
-                </button>
-                <button onclick="leaveQueue()" class="w-full py-3 rounded-xl bg-brand-red text-red-700 font-medium text-xs hover:bg-red-200 transition-colors">
-                    Leave Queue ❌
-                </button>
+    <!-- WALK-IN MODAL -->
+    <div id="walkInModal" class="fixed inset-0 bg-black/40 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-brand-card p-6 rounded-3xl max-w-sm w-full border border-brand-border space-y-4">
+            <h3 class="font-bold text-lg">Add Walk-In Party</h3>
+            <input type="text" id="walkInName" placeholder="Guest Name" class="w-full p-2.5 rounded-xl bg-brand-bg border border-brand-border text-xs">
+            <select id="walkInParty" class="w-full p-2.5 rounded-xl bg-brand-bg border border-brand-border text-xs">
+                <option value="2">2 People</option>
+                <option value="3">3 People</option>
+                <option value="4">4 People</option>
+            </select>
+            <div class="flex gap-2">
+                <button onclick="submitWalkIn()" class="w-full py-2 bg-brand-forest text-white rounded-xl text-xs font-bold">Add to Queue</button>
+                <button onclick="closeWalkInModal()" class="w-full py-2 bg-brand-border text-brand-text rounded-xl text-xs font-bold">Cancel</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL 3: WALK-IN ADD MODAL -->
-    <div id="walkInModal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-brand-card w-full max-w-md rounded-3xl p-6 sm:p-8 border border-brand-border shadow-2xl relative">
-            <button onclick="closeWalkInModal()" class="absolute right-5 top-5 text-brand-muted hover:text-brand-text text-xl font-bold">×</button>
-            <h3 class="font-bold text-xl text-brand-text mb-4">Add Walk-In Guest</h3>
-            <form id="walkInForm" onsubmit="submitWalkIn(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-brand-muted uppercase mb-1">Guest Name</label>
-                    <input type="text" id="walkInName" required placeholder="e.g. Dr. Tariq" class="w-full px-4 py-2.5 rounded-xl bg-brand-bg border border-brand-border text-sm focus:outline-none focus:ring-2 focus:ring-brand-forest">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-brand-muted uppercase mb-1">Party Size</label>
-                        <select id="walkInParty" class="w-full px-4 py-2.5 rounded-xl bg-brand-bg border border-brand-border text-sm">
-                            <option value="1">1 Person</option>
-                            <option value="2">2 People</option>
-                            <option value="3">3 People</option>
-                            <option value="4" selected>4 People</option>
-                            <option value="5">5 People</option>
-                            <option value="6">6+ People</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-brand-muted uppercase mb-1">Preference</label>
-                        <select id="walkInPref" class="w-full px-4 py-2.5 rounded-xl bg-brand-bg border border-brand-border text-sm">
-                            <option value="Indoor AC">Indoor AC</option>
-                            <option value="Outdoor Patio">Outdoor Patio</option>
-                        </select>
-                    </div>
-                </div>
-                <button type="submit" class="w-full py-3 rounded-xl bg-brand-forest text-white font-medium text-sm hover:bg-[#1a4331] shadow-sm">
-                    Add to Queue
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- MODAL 4: QR CODE DEMO MODAL -->
-    <div id="qrModal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-brand-card w-full max-w-md rounded-3xl p-6 sm:p-8 border border-brand-border shadow-2xl relative text-center">
-            <button onclick="closeQrModal()" class="absolute right-5 top-5 text-brand-muted hover:text-brand-text text-xl font-bold">×</button>
-            <h3 class="font-bold text-xl text-brand-text mb-1">Restaurant QR Check-in</h3>
-            <p class="text-xs text-brand-muted mb-6">Scan with phone camera to open check-in flow</p>
-            
-            <div class="mb-4 flex justify-center">
-                <div id="qrcode" class="p-4 bg-white rounded-2xl border border-brand-border inline-block shadow-sm"></div>
-            </div>
-
-            <div class="mb-6">
-                <select id="qrRestSelect" onchange="generateQrCode()" class="w-full px-3 py-2 rounded-xl text-xs font-medium bg-brand-bg border border-brand-border">
-                    <!-- Populated by JS -->
-                </select>
-            </div>
-
-            <button onclick="copyQrLink()" class="w-full py-2.5 rounded-xl bg-brand-pale text-brand-forest font-semibold text-xs hover:bg-[#cbe1cc] transition-colors">
-                Copy Direct Check-In Link 🔗
-            </button>
-        </div>
-    </div>
-
-    <!-- MODAL 5: FEEDBACK MODAL -->
-    <div id="feedbackModal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-brand-card w-full max-w-md rounded-3xl p-6 sm:p-8 border border-brand-border shadow-2xl relative">
-            <button onclick="closeFeedbackModal()" class="absolute right-5 top-5 text-brand-muted hover:text-brand-text text-xl font-bold">×</button>
-            <h3 class="font-bold text-xl text-brand-text mb-1">QueueSense Feedback</h3>
-            <p class="text-xs text-brand-muted mb-6">How was your waiting experience?</p>
-
-            <form onsubmit="submitFeedback(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-brand-muted uppercase mb-1">Rating (1 to 5 Stars)</label>
-                    <select id="feedbackStars" class="w-full px-4 py-2.5 rounded-xl bg-brand-bg border border-brand-border text-sm">
-                        <option value="5">★★★★★ (5/5 - Excellent wait transparency)</option>
-                        <option value="4">★★★★☆ (4/5 - Very good)</option>
-                        <option value="3">★★★☆☆ (3/5 - Average)</option>
-                        <option value="2">★★☆☆☆ (2/5 - Room for improvement)</option>
-                        <option value="1">★☆☆☆☆ (1/5 - Poor)</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-brand-muted uppercase mb-1">Comment (Optional)</label>
-                    <textarea id="feedbackComment" rows="3" placeholder="e.g. Much better than waiting blindly outside!" class="w-full px-4 py-2.5 rounded-xl bg-brand-bg border border-brand-border text-sm focus:outline-none"></textarea>
-                </div>
-                <button type="submit" class="w-full py-3 rounded-xl bg-brand-forest text-white font-medium text-sm hover:bg-[#1a4331]">
-                    Submit Feedback
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- JAVASCRIPT LOGIC -->
+    <!-- SCRIPT -->
     <script>
-        // --- INITIAL DATA STORE ---
-        const DEFAULT_RESTAURANTS = [
-            { id: 'collette', name: 'Collette', area: 'Clifton', type: 'Artisan Café & Bakery', rating: 4.9, wait: '15–25 mins', tables: { two: 6, four: 8, turnTime: 45 } },
-            { id: 'xanders', name: 'Xander’s', area: 'Clifton', type: 'Casual Dining & Brunch', rating: 4.8, wait: '20–35 mins', tables: { two: 8, four: 10, turnTime: 50 } },
-            { id: 'butlers', name: 'Butler’s Chocolate Café', area: 'DHA', type: 'Dessert & Café', rating: 4.7, wait: '10–20 mins', tables: { two: 5, four: 6, turnTime: 35 } },
-            { id: 'espresso', name: 'Espresso', area: 'DHA', type: 'Coffee House', rating: 4.6, wait: '5–15 mins', tables: { two: 7, four: 6, turnTime: 30 } },
-            { id: 'aylanto', name: 'Café Aylanto', area: 'Clifton', type: 'Fine Casual Dining', rating: 4.9, wait: '30–45 mins', tables: { two: 10, four: 12, turnTime: 60 } },
-            { id: 'urban', name: 'Urban Kitchen', area: 'PECHS', type: 'Modern Bistro', rating: 4.7, wait: '15–25 mins', tables: { two: 6, four: 8, turnTime: 40 } }
+        // DATA STORE
+        const restaurants = [
+            { id: 'xanders', name: 'Xander’s', area: 'Clifton', type: 'Casual Dining', rating: 4.8, wait: '15–25 mins', phone: '021-111-9263377', tables: { two: 6, four: 8, turn: 45 } },
+            { id: 'collette', name: 'Collette', area: 'Clifton', type: 'Artisan Café', rating: 4.9, wait: '20–30 mins', phone: '021-35863261', tables: { two: 5, four: 6, turn: 40 } },
+            { id: 'aylanto', name: 'Café Aylanto', area: 'Clifton', type: 'Continental', rating: 4.9, wait: '30–45 mins', phone: '021-35309868', tables: { two: 8, four: 10, turn: 60 } },
+            { id: 'butlers', name: 'Butler’s Chocolate Café', area: 'DHA', type: 'Dessert Café', rating: 4.7, wait: '10–20 mins', phone: '021-35841410', tables: { two: 4, four: 5, turn: 35 } },
+            { id: 'espresso', name: 'Espresso', area: 'DHA', type: 'Coffee & Bistro', rating: 4.6, wait: '5–15 mins', phone: '021-111-377-737', tables: { two: 6, four: 6, turn: 30 } }
         ];
 
-        const DEFAULT_QUEUES = {
-            collette: [
-                { id: 'QS-301', name: 'Ali Ahmed', party: 2, pref: 'Indoor AC', status: 'Waiting', time: '12m ago' },
-                { id: 'QS-302', name: 'Zainab Malik', party: 4, pref: 'Outdoor Patio', status: 'Waiting', time: '8m ago' }
-            ],
+        let queues = {
             xanders: [
-                { id: 'QS-401', name: 'Bilal Khan', party: 3, pref: 'Indoor AC', status: 'Table ready', time: '18m ago' },
-                { id: 'QS-402', name: 'Ayesha Omer', party: 2, pref: 'Outdoor Patio', status: 'Waiting', time: '10m ago' },
-                { id: 'QS-403', name: 'Daniyal Sheikh', party: 5, pref: 'Indoor AC', status: 'Waiting', time: '4m ago' }
+                { id: '#QS-401', name: 'Hamza Khan', party: 3, status: 'Waiting' },
+                { id: '#QS-402', name: 'Sara Tariq', party: 2, status: 'Table ready' }
             ],
-            butlers: [],
-            espresso: [{ id: 'QS-501', name: 'Saad Raza', party: 2, pref: 'Indoor AC', status: 'Waiting', time: '5m ago' }],
-            aylanto: [{ id: 'QS-601', name: 'Hamza Tariq', party: 4, pref: 'Indoor AC', status: 'Waiting', time: '22m ago' }],
-            urban: []
+            collette: [{ id: '#QS-101', name: 'Ali Raza', party: 4, status: 'Waiting' }],
+            aylanto: [], butlers: [], espresso: []
         };
 
-        const DEFAULT_FEEDBACK = [
-            { rest: 'Xander’s', stars: 5, comment: 'Incredible wait estimate accuracy! Knew exactly when to walk over.', date: 'Today' },
-            { rest: 'Collette', stars: 4, comment: 'Clean interface and easy check-in.', date: 'Yesterday' }
-        ];
+        let currentActiveRest = 'xanders';
+        let currentUser = { isPremium: false, verifiedStaff: false };
+        let myTicket = null;
 
-        // State variables
-        let restaurants = JSON.parse(localStorage.getItem('qs_restaurants')) || DEFAULT_RESTAURANTS;
-        let queues = JSON.parse(localStorage.getItem('qs_queues')) || DEFAULT_QUEUES;
-        let feedbackList = JSON.parse(localStorage.getItem('qs_feedback')) || DEFAULT_FEEDBACK;
-        let currentActiveRestId = 'xanders';
-        let selectedCheckInRestId = null;
-        let activeDelayState = false;
-        let activeCustomerTicket = JSON.parse(localStorage.getItem('qs_my_ticket')) || null;
-
-        // Initialize application on load
-        window.addEventListener('DOMContentLoaded', () => {
-            renderRestaurantDirectory(restaurants);
-            populateDashboardSelects();
-            switchDashboardRestaurant(currentActiveRestId);
-            renderFeedbackList();
-            
-            if (activeCustomerTicket) {
-                // If user had an active ticket, we can show a subtle reminder or keep it accessible
-            }
-        });
-
-        // Save state to localStorage
-        function saveState() {
-            localStorage.setItem('qs_restaurants', JSON.stringify(restaurants));
-            localStorage.setItem('qs_queues', JSON.stringify(queues));
-            localStorage.setItem('qs_feedback', JSON.stringify(feedbackList));
-            if (activeCustomerTicket) {
-                localStorage.setItem('qs_my_ticket', JSON.stringify(activeCustomerTicket));
-            } else {
-                localStorage.removeItem('qs_my_ticket');
-            }
+        // NAVIGATION
+        function showSection(sectionId) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
+            document.getElementById(sectionId).classList.remove('hidden');
         }
 
-        // --- SECTION C: RESTAURANT DIRECTORY & FILTERS ---
-        let currentAreaFilter = 'all';
-
-        function renderRestaurantDirectory(list) {
+        // RENDER DIRECTORY
+        function renderDirectory(list = restaurants) {
             const grid = document.getElementById('restaurantGrid');
             grid.innerHTML = '';
-
-            if (list.length === 0) {
-                grid.innerHTML = `<div class="col-span-full py-12 text-center text-brand-muted text-sm">No restaurants found matching your criteria.</div>`;
-                return;
-            }
-
             list.forEach(r => {
-                const card = document.createElement('div');
-                card.className = 'bg-brand-card rounded-2xl p-6 border border-brand-border hover:border-brand-forest transition-all flex flex-col justify-between shadow-sm';
-                card.innerHTML = `
-                    <div>
-                        <div class="flex justify-between items-start mb-3">
-                            <div>
-                                <span class="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-brand-pale text-brand-forest uppercase">${r.area}</span>
-                                <h3 class="font-bold text-xl text-brand-text mt-2">${r.name}</h3>
-                                <p class="text-xs text-brand-muted">${r.type}</p>
-                            </div>
-                            <div class="text-right">
-                                <span class="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-md">★ ${r.rating}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="pt-6 mt-4 border-t border-brand-border flex items-center justify-between">
+                grid.innerHTML += `
+                    <div class="bg-brand-card p-5 rounded-2xl border border-brand-border flex flex-col justify-between space-y-4">
                         <div>
-                            <span class="text-[11px] text-brand-muted block">Simulated Wait</span>
-                            <span class="font-bold text-brand-forest text-sm">${activeDelayState ? '35–50 mins (Busy)' : r.wait}</span>
+                            <div class="flex justify-between items-start">
+                                <span class="text-[10px] bg-brand-pale text-brand-forest px-2 py-0.5 rounded font-bold uppercase">${r.area}</span>
+                                <span class="text-xs font-bold text-amber-600">★ ${r.rating}</span>
+                            </div>
+                            <h3 class="font-bold text-lg mt-2">${r.name}</h3>
+                            <p class="text-xs text-brand-muted">${r.type} • Est. wait: <span class="font-bold text-brand-forest">${r.wait}</span></p>
                         </div>
-                        <button onclick="openCheckInModal('${r.id}')" class="px-4 py-2 rounded-xl bg-brand-forest text-white text-xs font-semibold hover:bg-[#1a4331] transition-all">
-                            Join Queue
-                        </button>
+
+                        <div class="space-y-2 pt-2 border-t border-brand-border">
+                            <button onclick="joinQueuePrompt('${r.id}')" class="w-full py-2 bg-brand-forest text-white text-xs font-bold rounded-xl">Join Waitlist</button>
+                            
+                            ${currentUser.isPremium ? `
+                                <a href="tel:${r.phone}" class="w-full py-2 block text-center bg-amber-100 text-amber-900 border border-amber-300 text-xs font-bold rounded-xl">
+                                    📞 One-Tap Call Host (${r.phone})
+                                </a>
+                            ` : `
+                                <button onclick="showSection('premium-info')" class="w-full py-1.5 text-center text-[11px] text-amber-800 font-medium">
+                                    🔒 Unlock One-Tap Calling (QueueSense+)
+                                </button>
+                            `}
+                        </div>
                     </div>
                 `;
-                grid.appendChild(card);
             });
         }
 
-        function filterRestaurants() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const waitFilter = document.getElementById('waitTimeFilter').value;
-
-            let filtered = restaurants.filter(r => {
-                const matchesSearch = r.name.toLowerCase().includes(query) || r.type.toLowerCase().includes(query) || r.area.toLowerCase().includes(query);
-                const matchesArea = currentAreaFilter === 'all' || r.area.toLowerCase() === currentAreaFilter.toLowerCase();
-                return matchesSearch && matchesArea;
-            });
-
-            renderRestaurantDirectory(filtered);
+        function filterDirectory() {
+            const q = document.getElementById('directorySearch').value.toLowerCase();
+            renderDirectory(restaurants.filter(r => r.name.toLowerCase().includes(q) || r.area.toLowerCase().includes(q)));
         }
 
-        function setAreaFilter(area) {
-            currentAreaFilter = area;
-            document.querySelectorAll('.area-btn').forEach(btn => {
-                if (btn.dataset.area === area) {
-                    btn.className = 'area-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-brand-forest text-white transition-all';
-                } else {
-                    btn.className = 'area-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-brand-bg text-brand-muted hover:bg-brand-pale hover:text-brand-forest transition-all';
-                }
-            });
-            filterRestaurants();
+        // AUTH & VERIFICATION
+        function switchAuthTab(type) {
+            if (type === 'diner') {
+                document.getElementById('dinerAuthForm').classList.remove('hidden');
+                document.getElementById('staffAuthForm').classList.add('hidden');
+            } else {
+                document.getElementById('dinerAuthForm').classList.add('hidden');
+                document.getElementById('staffAuthForm').classList.remove('hidden');
+            }
         }
 
-        // --- CHECK-IN MODAL FLOW ---
-        function openCheckInModal(restId) {
-            selectedCheckInRestId = restId;
-            const rest = restaurants.find(r => r.id === restId);
-            if (!rest) return;
-
-            document.getElementById('modalRestaurantName').innerText = rest.name;
-            document.getElementById('modalRestaurantMeta').innerText = `${rest.area}, Karachi • Est. wait: ${rest.wait}`;
-            document.getElementById('modalCalculatedWait').innerText = rest.wait;
-            document.getElementById('guestNameInput').value = '';
-            
-            document.getElementById('checkInModal').classList.remove('hidden');
-        }
-
-        function closeCheckInModal() {
-            document.getElementById('checkInModal').classList.add('hidden');
-        }
-
-        function submitCheckIn(e) {
+        function handleDinerSignup(e) {
             e.preventDefault();
-            const name = document.getElementById('guestNameInput').value;
-            const party = document.getElementById('partySizeInput').value;
-            const pref = document.getElementById('seatingPrefInput').value;
-            const rest = restaurants.find(r => r.id === selectedCheckInRestId);
-
-            const randomId = '#QS-' + Math.floor(100 + Math.random() * 900);
-            const newTicket = {
-                id: randomId,
-                restId: selectedCheckInRestId,
-                restName: rest.name,
-                name: name,
-                party: parseInt(party),
-                pref: pref,
-                status: 'Waiting',
-                wait: rest.wait,
-                time: 'Just now'
-            };
-
-            if (!queues[selectedCheckInRestId]) {
-                queues[selectedCheckInRestId] = [];
-            }
-            queues[selectedCheckInRestId].unshift(newTicket);
-            activeCustomerTicket = newTicket;
-            saveState();
-
-            closeCheckInModal();
-            switchDashboardRestaurant(selectedCheckInRestId);
-            openTicketModalWithData(newTicket);
+            const tier = document.getElementById('dinerTier').value;
+            currentUser.isPremium = (tier === 'premium');
+            alert(`Account created successfully! ${currentUser.isPremium ? 'QueueSense+ Active ★' : 'Standard Tier Active.'}`);
+            renderDirectory();
+            showSection('customer-portal');
         }
 
-        // --- TICKET MODAL ---
-        function openTicketModalWithData(ticket) {
-            document.getElementById('ticketRestName').innerText = ticket.restName;
-            document.getElementById('ticketIdDisplay').innerText = ticket.id;
-            document.getElementById('ticketGuestName').innerText = ticket.name;
-            document.getElementById('ticketPartySize').innerText = ticket.party + ' People (' + ticket.pref + ')';
-            document.getElementById('ticketWaitDisplay').innerText = ticket.wait;
-            
-            const statusEl = document.getElementById('ticketStatusDisplay');
-            statusEl.innerText = ticket.status;
-            if (ticket.status === 'Table ready') {
-                statusEl.className = 'px-2.5 py-1 rounded-full bg-brand-lime text-brand-forest font-semibold text-xs';
-            } else if (ticket.status === 'Seated') {
-                statusEl.className = 'px-2.5 py-1 rounded-full bg-brand-pale text-brand-forest font-semibold text-xs';
+        function handleStaffVerification(e) {
+            e.preventDefault();
+            const isBypass = document.getElementById('demoBypass').checked;
+            if (isBypass) {
+                currentUser.verifiedStaff = true;
+                alert('Verification Granted (Demo Mode). Entering Staff Dashboard.');
+                bypassStaffVerification();
             } else {
-                statusEl.className = 'px-2.5 py-1 rounded-full bg-brand-amber text-brand-text font-semibold text-xs';
-            }
-
-            document.getElementById('ticketModal').classList.remove('hidden');
-        }
-
-        function closeTicketModal() {
-            document.getElementById('ticketModal').classList.add('hidden');
-        }
-
-        function refreshCustomerTicket() {
-            if (!activeCustomerTicket) return;
-            // Find latest state from queue
-            const restQueue = queues[activeCustomerTicket.restId] || [];
-            const found = restQueue.find(q => q.id === activeCustomerTicket.id);
-            if (found) {
-                activeCustomerTicket = found;
-                openTicketModalWithData(found);
-                alert('Ticket status refreshed successfully.');
-            } else {
-                alert('Your ticket has been completed or removed by staff.');
-                activeCustomerTicket = null;
-                saveState();
-                closeTicketModal();
+                alert('Verification submitted! Admin review pending (24 hours).');
             }
         }
 
-        function leaveQueue() {
-            if (!activeCustomerTicket) return;
-            const restQueue = queues[activeCustomerTicket.restId] || [];
-            queues[activeCustomerTicket.restId] = restQueue.filter(q => q.id !== activeCustomerTicket.id);
-            activeCustomerTicket = null;
-            saveState();
-            closeTicketModal();
-            switchDashboardRestaurant(currentActiveRestId);
-            alert('You have successfully left the queue.');
+        function bypassStaffVerification() {
+            currentUser.verifiedStaff = true;
+            document.getElementById('staffAuthGate').classList.add('hidden');
+            document.getElementById('staffDashboardBody').classList.remove('hidden');
+            renderStaffDashboard();
         }
 
-        // --- DASHBOARD & MANAGEMENT ---
-        function populateDashboardSelects() {
-            const selectDash = document.getElementById('dashboardRestaurantSelect');
-            const selectQr = document.getElementById('qrRestSelect');
-            selectDash.innerHTML = '';
-            selectQr.innerHTML = '';
-
-            restaurants.forEach(r => {
-                const opt1 = document.createElement('option');
-                opt1.value = r.id;
-                opt1.innerText = r.name + ' (' + r.area + ')';
-                selectDash.appendChild(opt1);
-
-                const opt2 = document.createElement('option');
-                opt2.value = r.id;
-                opt2.innerText = r.name;
-                selectQr.appendChild(opt2);
-            });
-            selectDash.value = currentActiveRestId;
-        }
-
-        function switchDashboardRestaurant(restId) {
-            currentActiveRestId = restId;
-            document.getElementById('dashboardRestaurantSelect').value = restId;
-            const rest = restaurants.find(r => r.id === restId);
-            if (!rest) return;
-
-            document.getElementById('dashRestaurantTitle').innerText = rest.name + ' Queue';
-            document.getElementById('valTwoSeater').innerText = rest.tables.two;
-            document.getElementById('valFourSeater').innerText = rest.tables.four;
-            document.getElementById('valTurnTime').innerText = rest.tables.turnTime + ' mins';
-
-            renderDashboardQueue();
-            updateMetrics();
-        }
-
-        function renderDashboardQueue() {
-            const tbody = document.getElementById('dashboardQueueTableBody');
+        // STAFF DASHBOARD
+        function renderStaffDashboard() {
+            const tbody = document.getElementById('staffQueueBody');
             tbody.innerHTML = '';
-            const qList = queues[currentActiveRestId] || [];
-
+            const qList = queues[currentActiveRest] || [];
+            
             if (qList.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-brand-muted text-xs">No active guests currently in the queue.</td></tr>`;
+                tbody.innerHTML = '<tr><td colspan="5" class="py-4 text-center text-brand-muted text-xs">No active queue entries.</td></tr>';
                 return;
             }
-
-            qList.forEach((item, index) => {
-                const tr = document.createElement('tr');
-                tr.className = 'hover:bg-brand-bg/60 transition-colors';
-                
-                let badgeClass = 'bg-brand-amber text-brand-text';
-                if (item.status === 'Table ready') badgeClass = 'bg-brand-lime text-brand-forest font-semibold';
-                if (item.status === 'Seated') badgeClass = 'bg-brand-pale text-brand-forest';
-                if (item.status === 'Removed') badgeClass = 'bg-brand-red text-red-800';
-
-                tr.innerHTML = `
-                    <td class="py-3 px-2">
-                        <span class="font-mono text-xs font-bold text-brand-forest block">${item.id}</span>
-                        <span class="font-semibold text-brand-text">${item.name}</span>
-                    </td>
-                    <td class="py-3 px-2 text-xs text-brand-muted">
-                        ${item.party} pax (${item.pref})
-                    </td>
-                    <td class="py-3 px-2 text-xs font-medium text-brand-forest">
-                        ${item.wait}
-                    </td>
-                    <td class="py-3 px-2">
-                        <span class="px-2.5 py-1 rounded-full text-[11px] ${badgeClass}">${item.status}</span>
-                    </td>
-                    <td class="py-3 px-2 text-right space-x-1">
-                        <button onclick="updateGuestStatus('${item.id}', 'Table ready')" class="px-2 py-1 bg-brand-pale text-brand-forest rounded text-[11px] font-medium hover:bg-[#cbe1cc]" title="Mark Ready">Ready</button>
-                        <button onclick="updateGuestStatus('${item.id}', 'Seated')" class="px-2 py-1 bg-brand-bg border border-brand-border text-brand-text rounded text-[11px] font-medium hover:bg-brand-border" title="Mark Seated">Seat</button>
-                        <button onclick="updateGuestStatus('${item.id}', 'Removed')" class="px-2 py-1 bg-red-50 text-red-600 rounded text-[11px] font-medium hover:bg-red-100" title="Remove">✕</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function updateGuestStatus(ticketId, newStatus) {
-            const qList = queues[currentActiveRestId] || [];
-            const guest = qList.find(q => q.id === ticketId);
-            if (guest) {
-                guest.status = newStatus;
-                saveState();
-                renderDashboardQueue();
-                updateMetrics();
-            }
-        }
-
-        function updateMetrics() {
-            const qList = queues[currentActiveRestId] || [];
-            const waitingCount = qList.filter(q => q.status === 'Waiting' || q.status === 'Table ready').length;
-            const rest = restaurants.find(r => r.id === currentActiveRestId);
-
-            document.getElementById('metricWaitingCount').innerText = waitingCount;
-            document.getElementById('metricAvgWait').innerText = rest ? rest.wait.split('–')[0] + 'm' : '15m';
-            document.getElementById('metricTablesAvailable').innerText = rest ? (rest.tables.two + rest.tables.four - waitingCount) : 10;
-            document.getElementById('metricFeedbackCount').innerText = feedbackList.length + ' submissions';
-        }
-
-        // --- TABLE INVENTORY & TABLEFIT CONTROLS ---
-        function updateTableInventory(type, val) {
-            const rest = restaurants.find(r => r.id === currentActiveRestId);
-            if (!rest) return;
-
-            if (type === 'two') {
-                rest.tables.two = parseInt(val);
-                document.getElementById('valTwoSeater').innerText = val;
-            } else if (type === 'four') {
-                rest.tables.four = parseInt(val);
-                document.getElementById('valFourSeater').innerText = val;
-            } else if (type === 'turnTime') {
-                rest.tables.turnTime = parseInt(val);
-                document.getElementById('valTurnTime').innerText = val + ' mins';
-                rest.wait = `${Math.floor(val/3)}–${Math.floor(val/2)} mins`;
-            }
-
-            saveState();
-            updateMetrics();
-            renderRestaurantDirectory(restaurants);
-        }
-
-        // --- WALK-IN MODAL ---
-        function openWalkInModal() {
-            document.getElementById('walkInName').value = '';
-            document.getElementById('walkInModal').classList.remove('hidden');
-        }
-        function closeWalkInModal() {
-            document.getElementById('walkInModal').classList.add('hidden');
-        }
-        function submitWalkIn(e) {
-            e.preventDefault();
-            const name = document.getElementById('walkInName').value;
-            const party = document.getElementById('walkInParty').value;
-            const pref = document.getElementById('walkInPref').value;
-            const rest = restaurants.find(r => r.id === currentActiveRestId);
-
-            const newTicket = {
-                id: '#QS-' + Math.floor(100 + Math.random() * 900),
-                restId: currentActiveRestId,
-                restName: rest.name,
-                name: name + ' (Walk-in)',
-                party: parseInt(party),
-                pref: pref,
-                status: 'Waiting',
-                wait: rest.wait,
-                time: 'Just now'
-            };
-
-            if (!queues[currentActiveRestId]) queues[currentActiveRestId] = [];
-            queues[currentActiveRestId].unshift(newTicket);
-            saveState();
-            closeWalkInModal();
-            renderDashboardQueue();
-            updateMetrics();
-        }
-
-        // --- DELAY ALERT SIMULATION ---
-        function toggleDelayAlert() {
-            activeDelayState = !activeDelayState;
-            const banner = document.getElementById('activeDelayBanner');
-            const btn = document.getElementById('delayAlertBtn');
-
-            if (activeDelayState) {
-                banner.classList.remove('hidden');
-                btn.className = 'px-3 py-2 rounded-xl bg-brand-amber border border-brand-amber text-brand-text text-xs font-semibold';
-                restaurants.forEach(r => r.wait = '35–50 mins');
-            } else {
-                banner.classList.add('hidden');
-                btn.className = 'px-3 py-2 rounded-xl bg-brand-bg border border-brand-border text-brand-text text-xs font-medium hover:bg-brand-border';
-                restaurants = JSON.parse(JSON.stringify(DEFAULT_RESTAURANTS));
-            }
-            saveState();
-            renderRestaurantDirectory(restaurants);
-            renderDashboardQueue();
-        }
-
-        // --- CSV EXPORT ---
-        function exportQueueCsv() {
-            const qList = queues[currentActiveRestId] || [];
-            if (qList.length === 0) {
-                alert('No queue data available to export for this restaurant.');
-                return;
-            }
-
-            let csv = 'Restaurant,Ticket ID,Guest Name,Party Size,Preference,Status,Wait Estimate,Join Time\n';
-            const rest = restaurants.find(r => r.id === currentActiveRestId);
 
             qList.forEach(q => {
-                csv += `"${rest.name}","${q.id}","${q.name}",${q.party},"${q.pref}","${q.status}","${q.wait}","${q.time}"\n`;
+                tbody.innerHTML += `
+                    <tr class="hover:bg-brand-bg/50">
+                        <td class="py-2.5 font-mono font-bold text-brand-forest">${q.id}</td>
+                        <td class="py-2.5 font-semibold">${q.name}</td>
+                        <td class="py-2.5">${q.party} pax</td>
+                        <td class="py-2.5"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-brand-amber">${q.status}</span></td>
+                        <td class="py-2.5 text-right space-x-1">
+                            <button onclick="updateStatus('${q.id}', 'Table ready')" class="px-2 py-1 bg-brand-pale text-brand-forest text-[10px] font-bold rounded">Ready</button>
+                            <button onclick="updateStatus('${q.id}', 'Seated')" class="px-2 py-1 bg-brand-bg text-brand-text text-[10px] font-bold rounded">Seat</button>
+                        </td>
+                    </tr>
+                `;
             });
-
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.setAttribute('download', `queuesense_${currentActiveRestId}_export.csv`);
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
         }
 
-        // --- RESET DEMO DATA ---
-        function resetDemoData() {
-            if (confirm('Are you sure you want to reset all demo data back to default state?')) {
-                localStorage.clear();
-                restaurants = JSON.parse(JSON.stringify(DEFAULT_RESTAURANTS));
-                queues = JSON.parse(JSON.stringify(DEFAULT_QUEUES));
-                feedbackList = JSON.parse(JSON.stringify(DEFAULT_FEEDBACK));
-                activeCustomerTicket = null;
-                activeDelayState = false;
-                document.getElementById('activeDelayBanner').classList.add('hidden');
-                
-                renderRestaurantDirectory(restaurants);
-                switchDashboardRestaurant('xanders');
-                renderFeedbackList();
-                alert('Demo data has been successfully reset.');
+        function updateStatus(id, newStatus) {
+            const item = queues[currentActiveRest].find(q => q.id === id);
+            if (item) item.status = newStatus;
+            renderStaffDashboard();
+            if (myTicket && myTicket.id === id) renderMyTicket();
+        }
+
+        function updateTableFit(key, val) {
+            if (key === 'two') document.getElementById('valTwo').innerText = val;
+            if (key === 'four') document.getElementById('valFour').innerText = val;
+            if (key === 'turn') document.getElementById('valTurn').innerText = val + 'm';
+        }
+
+        // QUEUE JOINING & TICKET
+        function joinQueuePrompt(restId) {
+            const name = prompt('Enter your name to join waitlist:');
+            if (name) {
+                const newTicket = {
+                    id: '#QS-' + Math.floor(100 + Math.random()*900),
+                    name: name,
+                    party: 3,
+                    status: 'Waiting',
+                    restName: restaurants.find(r => r.id === restId).name
+                };
+                queues[restId].push(newTicket);
+                myTicket = newTicket;
+                renderMyTicket();
+                showSection('my-ticket-view');
             }
         }
 
-        // --- QR CODE GENERATOR DEMO ---
-        function openQrModal() {
-            document.getElementById('qrModal').classList.remove('hidden');
-            generateQrCode();
-        }
-        function closeQrModal() {
-            document.getElementById('qrModal').classList.add('hidden');
-        }
-        function generateQrCode() {
-            const restId = document.getElementById('qrRestSelect').value || 'xanders';
-            const container = document.getElementById('qrcode');
-            container.innerHTML = '';
-            
-            const dummyUrl = `https://queuesense.pk/checkin?restaurant=${restId}`;
-            new QRCode(container, {
-                text: dummyUrl,
-                width: 160,
-                height: 160,
-                colorDark : "#20251F",
-                colorLight : "#FFFEFA",
-                correctLevel : QRCode.CorrectLevel.M
-            });
-        }
-        function copyQrLink() {
-            const restId = document.getElementById('qrRestSelect').value || 'xanders';
-            const dummyUrl = `https://queuesense.pk/checkin?restaurant=${restId}`;
-            navigator.clipboard.writeText(dummyUrl).then(() => {
-                alert('Check-in link copied to clipboard: ' + dummyUrl);
-            });
+        function renderMyTicket() {
+            const container = document.getElementById('ticketContainer');
+            if (!myTicket) {
+                container.innerHTML = '<p class="text-xs text-brand-muted text-center py-6">No active customer ticket found.</p>';
+                return;
+            }
+            container.innerHTML = `
+                <div class="text-center border-b border-brand-border pb-3">
+                    <span class="text-[10px] font-bold bg-brand-pale text-brand-forest px-2 py-0.5 rounded uppercase">Active Ticket</span>
+                    <h3 class="font-bold text-xl mt-1">${myTicket.restName}</h3>
+                </div>
+                <div class="space-y-2 text-xs">
+                    <div class="flex justify-between"><span class="text-brand-muted">Ticket Number:</span><span class="font-mono font-bold text-brand-forest">${myTicket.id}</span></div>
+                    <div class="flex justify-between"><span class="text-brand-muted">Guest Name:</span><span class="font-bold">${myTicket.name}</span></div>
+                    <div class="flex justify-between"><span class="text-brand-muted">Current Status:</span><span class="px-2 py-0.5 rounded bg-brand-amber font-bold">${myTicket.status}</span></div>
+                </div>
+            `;
         }
 
-        // --- CUSTOMER FEEDBACK ---
-        function openFeedbackModal() {
-            document.getElementById('feedbackModal').classList.remove('hidden');
+        // WALK-IN MODAL
+        function openWalkInModal() { document.getElementById('walkInModal').classList.remove('hidden'); }
+        function closeWalkInModal() { document.getElementById('walkInModal').classList.add('hidden'); }
+        function submitWalkIn() {
+            const name = document.getElementById('walkInName').value || 'Walk-In';
+            const party = document.getElementById('walkInParty').value;
+            queues[currentActiveRest].push({ id: '#QS-' + Math.floor(100 + Math.random()*900), name: name + ' (Walk-In)', party: parseInt(party), status: 'Waiting' });
+            closeWalkInModal();
+            renderStaffDashboard();
         }
-        function closeFeedbackModal() {
-            document.getElementById('feedbackModal').classList.add('hidden');
-        }
-        function submitFeedback(e) {
-            e.preventDefault();
-            const stars = document.getElementById('feedbackStars').value;
-            const comment = document.getElementById('feedbackComment').value;
-            const rest = restaurants.find(r => r.id === currentActiveRestId);
 
-            feedbackList.unshift({
-                rest: rest.name,
-                stars: parseInt(stars),
-                comment: comment || 'Great service!',
-                date: 'Just now'
-            });
-            saveState();
-            closeFeedbackModal();
-            renderFeedbackList();
-            updateMetrics();
-            alert('Thank you for submitting your feedback!');
-        }
-        function renderFeedbackList() {
-            const listEl = document.getElementById('feedbackList');
-            listEl.innerHTML = '';
-            feedbackList.forEach(f => {
-                const div = document.createElement('div');
-                div.className = 'p-3 rounded-xl bg-brand-bg border border-brand-border text-xs space-y-1';
-                div.innerHTML = `
-                    <div class="flex justify-between font-semibold text-brand-text">
-                        <span>${f.rest}</span>
-                        <span class="text-amber-600">${'★'.repeat(f.stars)}</span>
-                    </div>
-                    <p class="text-brand-muted">${f.comment}</p>
-                `;
-                listEl.appendChild(div);
-            });
-        }
+        // INITIALIZATION
+        renderDirectory();
     </script>
 </body>
 </html>
